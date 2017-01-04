@@ -40,8 +40,8 @@ $ php artisan migrate #create the gallery table
 'roots' => [
     [
         'driver'        => 'GalleryCrudLocalFileSystem',         // driver for accessing file system (REQUIRED)
-        'path'          => public_path('galleries'),                 // path to files (REQUIRED)
-        'URL'           => url('galleries'), // URL to files (REQUIRED)
+        'path'          => 'galleries',                 // path to files (REQUIRED)
+        'URL'           => '/galleries', // URL to files (REQUIRED)
         'accessControl' => 'Barryvdh\Elfinder\Elfinder::checkAccess',
         'autoload'      => true,
         'tmbPath'       => 'thumbnails',
