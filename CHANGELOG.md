@@ -21,7 +21,7 @@ All Notable changes to `SeanDowney Laravel Backpack GalleryCrud` will be documen
 
 
 
-## 0.0.1 - 2017-01-04
+## 1.0.0 - 2017-01-04
 
 ### Added
 - Initial code.
