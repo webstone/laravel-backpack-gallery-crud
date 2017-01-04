@@ -32,7 +32,7 @@ class GalleryRequest extends \Backpack\CRUD\app\Http\Requests\CrudRequest
     {
         return [
             'title'            => 'required|min:5|max:255',
-            'slug'             => 'unique:gallery,slug,'.\Request::get('id'),
+            'slug'             => 'unique:galleries,slug,'.\Request::get('id'),
             'body'             => 'min:5',
             'captions.*'       => 'min:3',
             'images.*'         => 'in:0,1',
