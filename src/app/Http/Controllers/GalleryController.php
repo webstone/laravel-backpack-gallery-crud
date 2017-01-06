@@ -53,10 +53,15 @@ class GalleryController extends Controller
         }
 
         $files = Storage::disk($this->disk)->allFiles($gallery->slug);
+
+        $files = array_map(function($value) use ($gallery) {
+            return str_replace($gallery->slug.'/', '', $value);
+        }, $files);
+
         $files_data = [];
-        foreach ($files as $file_path) {
-            $file = str_replace($gallery->slug.'/', '', $file_path);
-            if (!isset($gallery->images[$file]) || ! $gallery->images[$file]['live']) {
+        foreach ($gallery->images as $file => $value) {
+            // check if the file is actually in the gallery directory
+            if (!in_array($file, $files)) {
                 continue;
             }
 

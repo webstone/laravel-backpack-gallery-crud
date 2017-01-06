@@ -29,7 +29,6 @@ class Gallery extends Model
     protected $casts = [
         'images' => 'array',
         'captions' => 'array',
-        'image_items' => 'array',
     ];
 
 
@@ -102,11 +101,34 @@ class Gallery extends Model
         $disk = config('seandowney.gallerycrud.disk');
         $files = Storage::disk($disk)->files($this->slug);
 
+        $slug = $this->slug;
+        $files = array_map(function($value) use ($slug) {
+            return str_replace($slug.'/', '', $value);
+        }, $files);
+
         $image_items = [];
-        foreach ($files as $file_path) {
-            $file = str_replace($this->slug.'/', '', $file_path);
+        foreach ($this->images as $file => $value) {
+            // check if the file is actually in the gallery directory
+            if (!in_array($file, $files)) {
+                continue;
+            }
+
+            $image_items[$file] = [
+                'image' => $file,
+                'image_path' => $this->images[$file]['image_path'],
+                'thumbnail_path' => $this->images[$file]['thumbnail_path'],
+                'live' => isset($this->images[$file]) ? $this->images[$file]['live'] : 0,
+                'width' => $this->images[$file]['width'],
+                'height' => $this->images[$file]['height'],
+                'caption' => isset($this->captions[$file]) ? $this->captions[$file] : '',
+            ];
+        }
+
+        // add any new files to the end of the list
+        foreach ($files as $file) {
+            $file_path = $this->slug.'/'.$file;
             $size_data = getimagesize(public_path($disk.'/'.$file_path));
-            $image_items[] = [
+            $image_items[$file] = [
                 'image' => $file,
                 'image_path' => $disk.'/'.$file_path,
                 'thumbnail_path' => $disk.'/thumbnails/'.$file_path,
@@ -132,6 +154,12 @@ class Gallery extends Model
 
         $files = Storage::disk($disk)->allFiles($this->slug);
         $image_items = [];
+
+        // order the file as we want
+        foreach ($value as $file => $live) {
+            $image_items[$file]['live'] = $live;
+        }
+
         foreach ($files as $key => $file_path) {
             $file = str_replace($this->slug.'/', '', $file_path);
             $size_data = getimagesize(public_path($disk.'/'.$file_path));
