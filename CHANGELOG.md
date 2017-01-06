@@ -19,6 +19,16 @@ All Notable changes to `SeanDowney Laravel Backpack GalleryCrud` will be documen
 ### Security
 - Nothing
 
+## 1.0.3 - 2017-01-05
+
+### Fixed
+- Allow the user to order the images in the gallery - refs #1.
+
+## 1.0.2 - 2017-01-04
+
+### Fixed
+- Fixing name of the galleries table in the validation rules
+
 ## 1.0.1 - 2017-01-04
 
 ### Fixed
