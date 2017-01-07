@@ -59,21 +59,23 @@ class GalleryController extends Controller
         }, $files);
 
         $files_data = [];
-        foreach ($gallery->images as $file => $value) {
-            // check if the file is actually in the gallery directory
-            if (!in_array($file, $files)) {
-                continue;
-            }
+        if (isset($gallery->images) && !empty($gallery->images)) {
+            foreach ($gallery->images as $file => $value) {
+                // check if the file is actually in the gallery directory
+                if (!in_array($file, $files)) {
+                    continue;
+                }
 
-            $files_data[] = [
-                'file' => $file,
-                'image_path' => $gallery->images[$file]['image_path'],
-                'thumbnail_path' => $gallery->images[$file]['thumbnail_path'],
-                'live' => isset($gallery->images[$file]) ? $gallery->images[$file]['live'] : 0,
-                'width' => $gallery->images[$file]['width'],
-                'height' => $gallery->images[$file]['height'],
-                'caption' => isset($gallery->captions[$file]) ? $gallery->captions[$file] : '',
-            ];
+                $files_data[] = [
+                    'file' => $file,
+                    'image_path' => $gallery->images[$file]['image_path'],
+                    'thumbnail_path' => $gallery->images[$file]['thumbnail_path'],
+                    'live' => isset($gallery->images[$file]) ? $gallery->images[$file]['live'] : 0,
+                    'width' => $gallery->images[$file]['width'],
+                    'height' => $gallery->images[$file]['height'],
+                    'caption' => isset($gallery->captions[$file]) ? $gallery->captions[$file] : '',
+                ];
+            }
         }
 
         $this->data['title']   = $gallery->title;
