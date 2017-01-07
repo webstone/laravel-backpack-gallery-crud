@@ -2,22 +2,10 @@
 
 All Notable changes to `SeanDowney Laravel Backpack GalleryCrud` will be documented in this file
 
-## NEXT - YYYY-MM-DD
-
-### Added
-- Nothing
-
-### Deprecated
-- Nothing
+## 1.0.3 - 2017-01-07
 
 ### Fixed
-- Nothing
-
-### Removed
-- Nothing
-
-### Security
-- Nothing
+- Issue with model when there are no images in the gallery record.
 
 ## 1.0.3 - 2017-01-05
 
