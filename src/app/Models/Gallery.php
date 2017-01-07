@@ -107,21 +107,23 @@ class Gallery extends Model
         }, $files);
 
         $image_items = [];
-        foreach ($this->images as $file => $value) {
-            // check if the file is actually in the gallery directory
-            if (!in_array($file, $files)) {
-                continue;
-            }
+        if (isset($this->images) && !empty($this->images)) {
+            foreach ($this->images as $file => $value) {
+                // check if the file is actually in the gallery directory
+                if (!in_array($file, $files)) {
+                    continue;
+                }
 
-            $image_items[$file] = [
-                'image' => $file,
-                'image_path' => $this->images[$file]['image_path'],
-                'thumbnail_path' => $this->images[$file]['thumbnail_path'],
-                'live' => isset($this->images[$file]) ? $this->images[$file]['live'] : 0,
-                'width' => $this->images[$file]['width'],
-                'height' => $this->images[$file]['height'],
-                'caption' => isset($this->captions[$file]) ? $this->captions[$file] : '',
-            ];
+                $image_items[$file] = [
+                    'image' => $file,
+                    'image_path' => $this->images[$file]['image_path'],
+                    'thumbnail_path' => $this->images[$file]['thumbnail_path'],
+                    'live' => isset($this->images[$file]) ? $this->images[$file]['live'] : 0,
+                    'width' => $this->images[$file]['width'],
+                    'height' => $this->images[$file]['height'],
+                    'caption' => isset($this->captions[$file]) ? $this->captions[$file] : '',
+                ];
+            }
         }
 
         // add any new files to the end of the list
