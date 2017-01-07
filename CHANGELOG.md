@@ -2,7 +2,12 @@
 
 All Notable changes to `SeanDowney Laravel Backpack GalleryCrud` will be documented in this file
 
-## 1.0.3 - 2017-01-07
+## 1.0.5 - 2017-01-07
+
+### Fixed
+- Check that the images are marked for inclusion before showing them on the frontend.
+
+## 1.0.4 - 2017-01-07
 
 ### Fixed
 - Issue with model when there are no images in the gallery record.
