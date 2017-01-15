@@ -2,6 +2,7 @@
 
 namespace SeanDowney\BackpackGalleryCrud\app\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use SeanDowney\BackpackGalleryCrud\app\Models\Gallery;
 use Storage;
 
