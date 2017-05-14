@@ -16,6 +16,7 @@ $ composer require seandowney/backpackgallerycrud
 
 2) Add the service provider to your config/app.php file:
 ```php
+Cviebrock\EloquentSluggable\ServiceProvider::class,
 SeanDowney\BackpackGalleryCrud\GalleryCRUDServiceProvider::class,
 ```
 
