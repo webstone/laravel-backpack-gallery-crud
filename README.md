@@ -14,7 +14,7 @@ An admin interface to easily add/edit/remove Gallery, using [Laravel Backpack](l
 $ composer require seandowney/backpackgallerycrud
 ```
 
-2) Add the service provider to your config/app.php file:
+2) If your Laravel version does not have package autodiscovery then add the service provider to your config/app.php file:
 ```php
 Cviebrock\EloquentSluggable\ServiceProvider::class,
 SeanDowney\BackpackGalleryCrud\GalleryCRUDServiceProvider::class,
@@ -26,7 +26,7 @@ $ php artisan vendor:publish --provider="SeanDowney\BackpackGalleryCrud\GalleryC
 $ php artisan migrate #create the gallery table
 ```
 
-4) Configuration of file storage in config/filesystems.php:
+4) Configuration of file storage in `config/filesystems.php`.
 
 ```php
 'galleries' => [
@@ -58,6 +58,18 @@ $ php artisan migrate #create the gallery table
 ```html
 <li><a href="{{ url(config('backpack.base.route_prefix', 'admin').'/gallery') }}"><i class="fa fa-picture-o"></i> <span>Gallery</span></a></li>
 ```
+
+## How to use the package
+This package relies heavily on the `elFinder` File Manager in Bakpack.
+
+* First create a gallery
+* In your galleries folder (the `path` setting in your `config/elfinder.php` roots), create a folder with the same name as the `slug` in your gallery record.
+* Upload image files into the folder
+* Now you can edit the gallery and the images are visible
+* You can add captions and include the images in the gallery or not
+* To remove images from the gallery
+  * uncheck the `Include` checkbox
+  * then in the file manager remove the file from the folder for that gallery
 
 ## Change log
 

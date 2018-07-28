@@ -2,6 +2,24 @@
 
 All Notable changes to `SeanDowney Laravel Backpack GalleryCrud` will be documented in this file
 
+## 1.0.8 - 2018-07-28
+
+### Fixed
+- Added package autodiscovery
+- Removed hardcoded `.png` references - #5
+- Improved the routes placement
+- Improved the Readme documentation
+
+## 1.0.7 - 2017-05-14
+
+### Fixed
+- Fixing - issue with vendor:publish command #3
+
+## 1.0.6 - 2017-01-15
+
+### Fixed
+- Fixing - the use of the base Laravel Controller
+
 ## 1.0.5 - 2017-01-07
 
 ### Fixed
