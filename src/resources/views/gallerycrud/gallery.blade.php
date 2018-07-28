@@ -23,7 +23,7 @@
 				<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject" class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
 					<a class="thumbnail @if($key == 0)demo-gallery__img--main @endif" href="{{ url($item['image_path']) }}" data-size="{{ $item['width'] }}x{{ $item['height'] }}" itemprop="contentUrl">
 						<span class="img">
-							<img src="{{ url($item['thumbnail_path'].'.png') }}" alt="" itemprop="thumbnail" >
+							<img src="{{ url($item['thumbnail_path']) }}" alt="" itemprop="thumbnail" >
 						</span>
 					</a>
                     <figcaption itemprop="caption description">{{ $item['caption'] }}</figcaption>

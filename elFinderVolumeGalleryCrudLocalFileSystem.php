@@ -21,6 +21,6 @@ class elFinderVolumeGalleryCrudLocalFileSystem extends \elFinderVolumeLocalFileS
 				$target = $target . DIRECTORY_SEPARATOR . $_dir;
 			}
 		}
-		return $dir . DIRECTORY_SEPARATOR . $stat['name'] . '.png';
+		return $dir . DIRECTORY_SEPARATOR . $stat['name'];
     }
 }
