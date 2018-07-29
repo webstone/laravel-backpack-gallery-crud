@@ -63,14 +63,13 @@ class GalleryController extends Controller
         if (isset($gallery->images) && !empty($gallery->images)) {
             foreach ($gallery->images as $file => $image_details) {
                 // check if the file is actually in the gallery directory
-                if (!in_array($file, $files) || $image_details['live'] == 0) {
+                if (!in_array($file, $files) || !$image_details['live']) {
                     continue;
                 }
 
                 $files_data[] = [
                     'file' => $file,
                     'image_path' => $image_details['image_path'],
-                    'thumbnail_path' => $image_details['thumbnail_path'],
                     'live' => isset($image_details) ? $image_details['live'] : 0,
                     'width' => $image_details['width'],
                     'height' => $image_details['height'],

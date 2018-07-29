@@ -21,9 +21,9 @@
 			<div class="thumbnails recentworks row gallery">
                 @foreach($files as $key => $item)
 				<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject" class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
-					<a class="thumbnail @if($key == 0)demo-gallery__img--main @endif" href="{{ url($item['image_path']) }}" data-size="{{ $item['width'] }}x{{ $item['height'] }}" itemprop="contentUrl">
+					<a class="thumbnail @if($key == 0)demo-gallery__img--main @endif" href="{{ gallery_image_url($item['image_path']) }}" data-size="{{ $item['width'] }}x{{ $item['height'] }}" itemprop="contentUrl">
 						<span class="img">
-							<img src="{{ url($item['thumbnail_path']) }}" alt="" itemprop="thumbnail" >
+							<img src="{{ gallery_image_url($item['image_path'].'?w=300&h=200') }}" alt="" itemprop="thumbnail" >
 						</span>
 					</a>
                     <figcaption itemprop="caption description">{{ $item['caption'] }}</figcaption>

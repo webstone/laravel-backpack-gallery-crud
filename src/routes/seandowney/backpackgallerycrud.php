@@ -10,10 +10,15 @@
 |
 */
 
+// Glide path
+
+Route::get('/'.config('seandowney.gallerycrud.glide_path', 'images').'/{path}', 'SeanDowney\BackpackGalleryCrud\app\Http\Controllers\ImageController@show')->where('path', '.+');
+
+// Admin
 Route::group([
-                'namespace' => 'SeanDowney\BackpackGalleryCrud\app\Http\Controllers\Admin',
-                'prefix' => config('backpack.base.route_prefix', 'admin'),
-                'middleware' => ['web', 'admin'],
-            ], function () {
-                CRUD::resource('gallery', 'GalleryCrudController');
-            });
+    'namespace' => 'SeanDowney\BackpackGalleryCrud\app\Http\Controllers\Admin',
+    'prefix' => config('backpack.base.route_prefix', 'admin'),
+    'middleware' => ['web', 'admin'],
+], function () {
+    CRUD::resource('gallery', 'GalleryCrudController');
+});

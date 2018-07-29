@@ -10,20 +10,20 @@ use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 
 class Gallery extends Model
 {
-	use CrudTrait;
+    use CrudTrait;
     use Sluggable, SluggableScopeHelpers;
 
      /*
-	|--------------------------------------------------------------------------
-	| GLOBAL VARIABLES
-	|--------------------------------------------------------------------------
-	*/
+    |--------------------------------------------------------------------------
+    | GLOBAL VARIABLES
+    |--------------------------------------------------------------------------
+    */
 
-	protected $table = 'galleries';
-	protected $primaryKey = 'id';
+    protected $table = 'galleries';
+    protected $primaryKey = 'id';
     public $timestamps = true;
-	protected $guarded = ['id'];
-	protected $fillable = [
+    protected $guarded = ['id'];
+    protected $fillable = [
         'title', 'slug', 'body', 'images', 'captions', 'status',
     ];
     protected $casts = [
@@ -46,44 +46,44 @@ class Gallery extends Model
         ];
     }
 
-	/*
-	|--------------------------------------------------------------------------
-	| FUNCTIONS
-	|--------------------------------------------------------------------------
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | FUNCTIONS
+    |--------------------------------------------------------------------------
+    */
 
     /**
-	 * Return the URL to the post.
-	 *
-	 * @return string
-	 */
-	public function url()
-	{
-		return route('view-gallery', $this->slug);
-	}
+     * Return the URL to the post.
+     *
+     * @return string
+     */
+    public function url()
+    {
+        return route('view-gallery', $this->slug);
+    }
 
-	/*
-	|--------------------------------------------------------------------------
-	| RELATIONS
-	|--------------------------------------------------------------------------
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | RELATIONS
+    |--------------------------------------------------------------------------
+    */
 
-	/*
-	|--------------------------------------------------------------------------
-	| SCOPES
-	|--------------------------------------------------------------------------
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | SCOPES
+    |--------------------------------------------------------------------------
+    */
     public function scopePublished($query)
     {
         return $query->where('status', 1);
     }
 
 
-	/*
-	|--------------------------------------------------------------------------
-	| ACCESORS
-	|--------------------------------------------------------------------------
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | ACCESORS
+    |--------------------------------------------------------------------------
+    */
 
     // The slug is created automatically from the "name" field if no slug exists.
     public function getSlugOrTitleAttribute()
@@ -117,7 +117,6 @@ class Gallery extends Model
                 $image_items[$file] = [
                     'image' => $file,
                     'image_path' => $this->images[$file]['image_path'],
-                    'thumbnail_path' => $this->images[$file]['thumbnail_path'],
                     'live' => isset($this->images[$file]) ? $this->images[$file]['live'] : 0,
                     'width' => $this->images[$file]['width'],
                     'height' => $this->images[$file]['height'],
@@ -129,11 +128,10 @@ class Gallery extends Model
         // add any new files to the end of the list
         foreach ($files as $file) {
             $file_path = $this->slug.'/'.$file;
-            $size_data = getimagesize(public_path($disk.'/'.$file_path));
+            $size_data = getimagesize(storage_path('app/'.$disk.'/'.$file_path));
             $image_items[$file] = [
                 'image' => $file,
-                'image_path' => $disk.'/'.$file_path,
-                'thumbnail_path' => $disk.'/thumbnails/'.$file_path,
+                'image_path' => $file_path,
                 'live' => isset($this->images[$file]) ? $this->images[$file]['live'] : 0,
                 'width' => $size_data[0],
                 'height' => $size_data[1],
@@ -144,11 +142,11 @@ class Gallery extends Model
         return $image_items;
     }
 
-	/*
-	|--------------------------------------------------------------------------
-	| MUTATORS
-	|--------------------------------------------------------------------------
-	*/
+    /*
+    |--------------------------------------------------------------------------
+    | MUTATORS
+    |--------------------------------------------------------------------------
+    */
     public function setImagesAttribute($value)
     {
         $disk = config('seandowney.gallerycrud.disk');
@@ -164,11 +162,10 @@ class Gallery extends Model
 
         foreach ($files as $key => $file_path) {
             $file = str_replace($this->slug.'/', '', $file_path);
-            $size_data = getimagesize(public_path($disk.'/'.$file_path));
+            $size_data = getimagesize(storage_path('app/'.$disk.'/'.$file_path));
             $image_items[$file] = [
                 'image' => $file,
-                'image_path' => $disk.'/'.$file_path,
-                'thumbnail_path' => $disk.'/thumbnails/'.$file_path,
+                'image_path' => $file_path,
                 'live' => isset($value[$file]) ? $value[$file] : 0,
                 'width' => $size_data[0],
                 'height' => $size_data[1],

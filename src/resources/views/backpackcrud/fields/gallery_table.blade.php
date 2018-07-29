@@ -50,7 +50,9 @@
                 @foreach($items as $key => $item)
                 <tr class="array-row ui-state-default">
                     <td class="col-xs-2">
-                        <a target="_blank" href="{{ asset($item['image_path']) }}"><img src="{{ asset($item['thumbnail_path']) }}" width="50" height="50"/></a>
+                        <a target="_blank" href="{{ gallery_image_url($item['image_path']) }}">
+                            <img src="{{ gallery_image_url($item['image_path'].'?w=50&h=50&fit=fill) }}" width="50" height="50"/>
+                        </a>
                     </td>
                     <td class="col-xs-8">
                         <input class="form-control input-sm" type="text" name="captions[{{ $item['image'] }}]" value="{{ isset($item['caption']) ? $item['caption'] : '' }}">

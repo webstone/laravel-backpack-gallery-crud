@@ -6,6 +6,8 @@
 
 An admin interface to easily add/edit/remove Gallery, using [Laravel Backpack](laravelbackpack.com).
 
+It uses [Glide](http://glide.thephpleague.com/) and provides helper methods to serve the images in frontend blade templates.
+
 ## Install
 
 1) In your terminal:
@@ -31,7 +33,7 @@ $ php artisan migrate #create the gallery table
 ```php
 'galleries' => [
     'driver' => 'local',
-    'root' => public_path('galleries'),
+    'root' => storage_path('app/galleries'),
 ],
 ```
 
@@ -41,11 +43,11 @@ $ php artisan migrate #create the gallery table
 'roots' => [
     [
         'driver'        => 'GalleryCrudLocalFileSystem',         // driver for accessing file system (REQUIRED)
-        'path'          => 'galleries',                 // path to files (REQUIRED)
+        'path'          => '../storage/app/galleries',           // path to files - relative to `public` (REQUIRED)
         'URL'           => '/galleries', // URL to files (REQUIRED)
         'accessControl' => 'Barryvdh\Elfinder\Elfinder::checkAccess',
         'autoload'      => true,
-        'tmbPath'       => 'thumbnails',
+        'tmbPath'       => '',
         'tmbSize'       => 150,
         'tmbCrop'       => false,
         'tmbBgColor'    => '#000',
@@ -53,7 +55,16 @@ $ php artisan migrate #create the gallery table
 ],
 ```
 
-6) [Optional] Add a menu item for it in resources/views/vendor/backpack/base/inc/sidebar.blade.php or menu.blade.php:
+6) [Optional] Configuration of Glide image path in `config/seandowney/gallerycrud.php`.
+
+**NOTE:** Do not change this setting after creating galleries.
+
+```php
+'glide_path' => 'image',
+],
+```
+
+7) [Optional] Add a menu item for it in resources/views/vendor/backpack/base/inc/sidebar.blade.php or menu.blade.php:
 
 ```html
 <li><a href="{{ url(config('backpack.base.route_prefix', 'admin').'/gallery') }}"><i class="fa fa-picture-o"></i> <span>Gallery</span></a></li>
@@ -70,6 +81,9 @@ This package relies heavily on the `elFinder` File Manager in Bakpack.
 * To remove images from the gallery
   * uncheck the `Include` checkbox
   * then in the file manager remove the file from the folder for that gallery
+* Helper methods are now available to load the images using Glide.
+  * `gallery_image_url` will load images from a gallery eg `gallery_image_url($item['image_path'].'?w=300&h=200')`
+  * `image_url` can be used where the images is from a `browse` field type so it may already include the disk path
 
 ## Change log
 

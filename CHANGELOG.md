@@ -2,13 +2,24 @@
 
 All Notable changes to `SeanDowney Laravel Backpack GalleryCrud` will be documented in this file
 
+## 1.1.0 - 2018-07-29
+
+This is a breaking change because it uses Glide to serve the images
+
+### Adding
+- Added [Glide](http://glide.thephpleague.com/) to serve the images
+- Adding new helper methods to improve useability
+- Automatically created the folder using the gallery `slug` when creating a gallery
+
 ## 1.0.8 - 2018-07-28
 
-### Fixed
+### Added
 - Added package autodiscovery
-- Removed hardcoded `.png` references - #5
 - Improved the routes placement
 - Improved the Readme documentation
+
+### Fixed
+- Removed hardcoded `.png` references - #5
 
 ## 1.0.7 - 2017-05-14
 

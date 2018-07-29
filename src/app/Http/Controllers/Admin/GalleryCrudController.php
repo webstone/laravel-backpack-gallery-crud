@@ -3,6 +3,7 @@
 namespace SeanDowney\BackpackGalleryCrud\app\Http\Controllers\Admin;
 
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use Storage;
 
 // VALIDATION: change the requests to match your own file names if you need form validation
 use SeanDowney\BackpackGalleryCrud\app\Http\Requests\GalleryRequest as StoreRequest;
@@ -10,26 +11,24 @@ use SeanDowney\BackpackGalleryCrud\app\Http\Requests\GalleryRequest as UpdateReq
 
 class GalleryCrudController extends CrudController {
 
-	public function setUp() {
+    public function setUp() {
 
         /*
-		|--------------------------------------------------------------------------
-		| BASIC CRUD INFORMATION
-		|--------------------------------------------------------------------------
-		*/
+        |--------------------------------------------------------------------------
+        | BASIC CRUD INFORMATION
+        |--------------------------------------------------------------------------
+        */
         $this->crud->setModel("SeanDowney\BackpackGalleryCrud\app\Models\Gallery");
         $this->crud->setRoute(config('backpack.base.route_prefix').'/gallery');
         $this->crud->setEntityNameStrings('gallery', 'galleries');
 
         /*
-		|--------------------------------------------------------------------------
-		| BASIC CRUD INFORMATION
-		|--------------------------------------------------------------------------
-		*/
+        |--------------------------------------------------------------------------
+        | BASIC CRUD INFORMATION
+        |--------------------------------------------------------------------------
+        */
 
-		// $this->crud->setFromDb();
-
-		// ------ CRUD FIELDS
+        // ------ CRUD FIELDS
         $this->crud->addField([    // TEXT
             'name' => 'title',
             'label' => 'Title',
@@ -86,13 +85,22 @@ class GalleryCrudController extends CrudController {
     }
 
 
-	public function store(StoreRequest $request)
-	{
-		return parent::storeCrud($request);
-	}
+    public function store(StoreRequest $request)
+    {
+        $store_response = parent::storeCrud($request);
 
-	public function update(UpdateRequest $request)
-	{
-		return parent::updateCrud($request);
-	}
+        $disk = config('seandowney.gallerycrud.disk');
+
+        if (!is_dir(Storage::disk($disk)->getAdapter()->getPathPrefix().'/'.$this->crud->entry->slug)) {
+            // create the gallery folder
+            Storage::disk($disk)->makeDirectory($this->crud->entry->slug);
+        }
+
+        return $store_response;
+    }
+
+    public function update(UpdateRequest $request)
+    {
+        return parent::updateCrud($request);
+    }
 }
