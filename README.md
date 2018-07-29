@@ -57,11 +57,8 @@ $ php artisan migrate #create the gallery table
 
 6) [Optional] Configuration of Glide image path in `config/seandowney/gallerycrud.php`.
 
-**NOTE:** Do not change this setting after creating galleries.
-
 ```php
 'glide_path' => 'image',
-],
 ```
 
 7) [Optional] Add a menu item for it in resources/views/vendor/backpack/base/inc/sidebar.blade.php or menu.blade.php:
