@@ -20,5 +20,6 @@ Route::group([
     'prefix' => config('backpack.base.route_prefix', 'admin'),
     'middleware' => ['web', 'admin'],
 ], function () {
-    CRUD::resource('gallery', 'GalleryCrudController');
+    Route::crud('gallery', 'GalleryCrudController');
+    //CRUD::resource('gallery', 'GalleryCrudController');
 });
