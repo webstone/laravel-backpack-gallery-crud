@@ -9,9 +9,15 @@ use Storage;
 use SeanDowney\BackpackGalleryCrud\app\Http\Requests\GalleryRequest as StoreRequest;
 use SeanDowney\BackpackGalleryCrud\app\Http\Requests\GalleryRequest as UpdateRequest;
 
-class GalleryCrudController extends CrudController {
+class GalleryCrudController extends CrudController
+{
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation { setupCreateDefaults as traitSetupCreateDefaults; store as traitStore; }
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation { update as traitUpdate; }
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
 
-    public function setUp() {
+    public function setup()
+    {
 
         /*
         |--------------------------------------------------------------------------
@@ -19,7 +25,7 @@ class GalleryCrudController extends CrudController {
         |--------------------------------------------------------------------------
         */
         $this->crud->setModel("SeanDowney\BackpackGalleryCrud\app\Models\Gallery");
-        $this->crud->setRoute(config('backpack.base.route_prefix').'/gallery');
+        $this->crud->setRoute(backpack_url('gallery'));
         $this->crud->setEntityNameStrings('gallery', 'galleries');
 
         /*
@@ -35,6 +41,7 @@ class GalleryCrudController extends CrudController {
             'type' => 'text',
             'placeholder' => 'Your title here',
         ]);
+
         $this->crud->addField([
             'name' => 'slug',
             'label' => 'Slug (URL)',
@@ -80,14 +87,32 @@ class GalleryCrudController extends CrudController {
             'type' => 'boolean',
             'options' => [0 => 'Draft', 1 => 'Published'],
         ]);
-
-
     }
 
+    /**
+     * Add the default settings, buttons, etc that this operation needs.
+     */
+    protected function setupCreateDefaults()
+    {
+        $this->traitSetupCreateDefaults();
+
+        // ------ HIDDEN FIELDS (for validation / mutators)
+        $this->crud->addField([
+            'name'  => 'images',
+            'type'  => 'hidden',
+            'value' => 'null',
+        ]);
+
+        $this->crud->addField([
+            'name'  => 'captions',
+            'type'  => 'hidden',
+            'value' => 'null',
+        ]);
+    }
 
     public function store(StoreRequest $request)
     {
-        $store_response = parent::storeCrud($request);
+        $store_response = $this->traitStore($request);
 
         $disk = config('seandowney.gallerycrud.disk');
 
@@ -101,6 +126,6 @@ class GalleryCrudController extends CrudController {
 
     public function update(UpdateRequest $request)
     {
-        return parent::updateCrud($request);
+        return $this->traitUpdate($request);
     }
 }

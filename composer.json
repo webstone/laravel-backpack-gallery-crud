@@ -1,6 +1,6 @@
 {
-    "name": "maig81/backpackgallerycrud",
-    "description": "Gallery management interface for Laravel 5 using Backpack CRUD.",
+    "name": "seandowney/backpackgallerycrud",
+    "description": "Gallery management interface for Laravel 6 using Backpack CRUD.",
     "keywords": [
         "laravel backpack",
         "gallery", "galleries",
@@ -14,13 +14,13 @@
         "role": "Lead Developer"
     }],
     "require": {
-        "php": ">=5.3.0",
-        "backpack/crud": "4.0.*",
+        "php": "^7.2.5",
+        "backpack/crud": "4.1.*",
         "cviebrock/eloquent-sluggable": "^6.0",
         "league/glide-laravel": "^1.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "4.*",
+        "phpunit/phpunit": "~8.0|~7.0|~9.0",
         "scrutinizer/ocular": "~1.1"
     },
     "autoload": {

@@ -28,6 +28,18 @@ class GalleryCRUDServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // define the routes for the application
+        $this->setupRoutes($this->app->router);
+
+        // use the vendor configuration file as fallback
+        $this->mergeConfigFrom(
+            __DIR__.'/config/seandowney/gallerycrud.php',
+            'seandowney.gallerycrud'
+        );
+
+        // publish config file
+        $this->publishes([__DIR__.'/config' => config_path()], 'config');
+
         // publish migrations
         $this->publishes([__DIR__.'/database/migrations' => database_path('migrations')], 'migrations');
 
@@ -37,35 +49,12 @@ class GalleryCRUDServiceProvider extends ServiceProvider
         // - then the stock views that come with the package, in case a published view might be missing
         $this->loadViewsFrom(realpath(__DIR__.'/resources/views'), 'seandowney');
 
-        $this->mergeConfigFrom(
-            __DIR__.'/config/seandowney/gallerycrud.php', 'seandowney.gallerycrud'
-        );
-
         // // publish views
         $this->publishes([
             __DIR__.'/resources/views/gallerycrud' => resource_path('views/vendor/seandowney/gallerycrud'),
             __DIR__.'/resources/views/backpackcrud' => resource_path('views/vendor/backpack/crud'),
         ], 'views');
-
-        // publish config file
-        $this->publishes([__DIR__.'/config' => config_path()], 'config');
-
     }
-
-
-    /**
-     * Register any package services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        // register its dependencies
-        $this->app->register(\Cviebrock\EloquentSluggable\ServiceProvider::class);
-
-        $this->setupRoutes($this->app->router);
-    }
-
 
     /**
      * Define the routes for the application.
@@ -84,5 +73,15 @@ class GalleryCRUDServiceProvider extends ServiceProvider
         }
 
         $this->loadRoutesFrom($routeFilePathInUse);
+    }
+
+    /**
+     * Register any package services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->app->register(\Cviebrock\EloquentSluggable\ServiceProvider::class);
     }
 }

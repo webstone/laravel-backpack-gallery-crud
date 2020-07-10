@@ -18,8 +18,7 @@ Route::get('/'.config('seandowney.gallerycrud.glide_path', 'images').'/{path}', 
 Route::group([
     'namespace' => 'SeanDowney\BackpackGalleryCrud\app\Http\Controllers\Admin',
     'prefix' => config('backpack.base.route_prefix', 'admin'),
-    'middleware' => ['web', 'admin'],
+    'middleware' => ['web', backpack_middleware()],
 ], function () {
     Route::crud('gallery', 'GalleryCrudController');
-    //CRUD::resource('gallery', 'GalleryCrudController');
 });
