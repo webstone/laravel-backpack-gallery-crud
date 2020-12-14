@@ -3,8 +3,9 @@
 namespace SeanDowney\BackpackGalleryCrud\app\Models;
 
 use Storage;
+use Log;
 use Illuminate\Database\Eloquent\Model;
-use Backpack\CRUD\CrudTrait;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 
@@ -96,83 +97,25 @@ class Gallery extends Model
     }
 
 
-    public function getImageItemsAttribute()
-    {
-        $disk = config('seandowney.gallerycrud.disk');
-        $files = Storage::disk($disk)->files($this->slug);
-
-        $slug = $this->slug;
-        $files = array_map(function($value) use ($slug) {
-            return str_replace($slug.'/', '', $value);
-        }, $files);
-
-        $image_items = [];
-        if (isset($this->images) && !empty($this->images)) {
-            foreach ($this->images as $file => $value) {
-                // check if the file is actually in the gallery directory
-                if (!in_array($file, $files)) {
-                    continue;
-                }
-
-                $image_items[$file] = [
-                    'image' => $file,
-                    'image_path' => $this->images[$file]['image_path'],
-                    'live' => isset($this->images[$file]) ? $this->images[$file]['live'] : 0,
-                    'width' => $this->images[$file]['width'],
-                    'height' => $this->images[$file]['height'],
-                    'caption' => isset($this->captions[$file]) ? $this->captions[$file] : '',
-                ];
-            }
-        }
-
-        // add any new files to the end of the list
-        foreach ($files as $file) {
-            $file_path = $this->slug.'/'.$file;
-            $size_data = getimagesize(storage_path('app/'.$disk.'/'.$file_path));
-            $image_items[$file] = [
-                'image' => $file,
-                'image_path' => $file_path,
-                'live' => isset($this->images[$file]) ? $this->images[$file]['live'] : 0,
-                'width' => $size_data[0],
-                'height' => $size_data[1],
-                'caption' => isset($this->captions[$file]) ? $this->captions[$file] : '',
-            ];
-        }
-
-        return $image_items;
-    }
 
     /*
     |--------------------------------------------------------------------------
     | MUTATORS
     |--------------------------------------------------------------------------
     */
-    public function setImagesAttribute($value)
+    public function setCaptionsAttribute($captions)
     {
-        $disk = config('seandowney.gallerycrud.disk');
-        $attribute_name = "images";
+        $captions = !is_array($captions) ? [] : $captions;
+        $images = json_decode($this->attributes['images'], true);
+        $images = !is_array($images) ? [] : $images;
 
-        $files = Storage::disk($disk)->allFiles($this->slug);
-        $image_items = [];
+        $captionsOrder = [];
 
-        // order the file as we want
-        foreach ($value as $file => $live) {
-            $image_items[$file]['live'] = $live;
+        foreach ($images as $file_path) {
+            $captionsOrder[$file_path] = !array_key_exists($file_path, $captions) ? '' : $captions[$file_path];
         }
 
-        foreach ($files as $key => $file_path) {
-            $file = str_replace($this->slug.'/', '', $file_path);
-            $size_data = getimagesize(storage_path('app/'.$disk.'/'.$file_path));
-            $image_items[$file] = [
-                'image' => $file,
-                'image_path' => $file_path,
-                'live' => isset($value[$file]) ? $value[$file] : 0,
-                'width' => $size_data[0],
-                'height' => $size_data[1],
-            ];
-        }
-
-        $this->attributes[$attribute_name] = json_encode($image_items);
+        $this->attributes['captions'] = json_encode($captionsOrder);
     }
 
 }

@@ -3,13 +3,17 @@
 namespace SeanDowney\BackpackGalleryCrud\app\Http\Controllers\Admin;
 
 use Backpack\CRUD\app\Http\Controllers\CrudController;
-use Storage;
 
 // VALIDATION: change the requests to match your own file names if you need form validation
 use SeanDowney\BackpackGalleryCrud\app\Http\Requests\GalleryRequest as StoreRequest;
 use SeanDowney\BackpackGalleryCrud\app\Http\Requests\GalleryRequest as UpdateRequest;
 
-class GalleryCrudController extends CrudController {
+class GalleryCrudController extends CrudController
+{
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
 
     public function setUp() {
 
@@ -28,6 +32,36 @@ class GalleryCrudController extends CrudController {
         |--------------------------------------------------------------------------
         */
 
+
+        // ------ CRUD COLUMNS
+        $this->crud->addColumns(['title']); // add multiple columns, at the end of the stack
+        $this->crud->addColumn([
+            'name' => 'status',
+            'label' => 'Status',
+            'type' => 'boolean',
+            'options' => [0 => 'Draft', 1 => 'Published'],
+        ]);
+
+
+    }
+
+    public function setupCreateOperation()
+    {
+        $this->addFields();
+        $this->crud->setValidation(StoreRequest::class);
+
+    }
+
+    public function setupUpdateOperation()
+    {
+        $this->addFields();
+        $this->crud->setValidation(UpdateRequest::class);
+
+    }
+
+
+    public function addFields()
+    {
         // ------ CRUD FIELDS
         $this->crud->addField([    // TEXT
             'name' => 'title',
@@ -49,18 +83,24 @@ class GalleryCrudController extends CrudController {
             'placeholder' => 'Your textarea text here',
         ]);
 
+        $this->crud->addField([   // Upload
+            'name'      => 'images',
+            'label'     => 'Images',
+            'type'      => 'browse_multiple',
+            'multiple'   => true,
+            'sortable'   => true,
+            'mime_types' => ['image'],
+        ]);
+
         $this->crud->addField([ // Table
-            'name' => 'image_items',
-            'label' => 'Images',
+            'name' => 'captions',
+            'label' => 'Captions',
             'type' => 'gallery_table',
             'entity_singular' => 'image_item', // used on the "Add X" button
             'columns' => [
                 'image' => 'Upload Image',
                 'caption' => 'Caption',
             ],
-            'max' => 50, // maximum rows allowed in the table
-            'min' => 0, // minimum rows allowed in the table
-            'disk' => config('seandowney.gallerycrud.disk'),
         ]);
 
         $this->crud->addField([    // SELECT
@@ -69,38 +109,7 @@ class GalleryCrudController extends CrudController {
             'name' => 'status',
             'allows_null' => true,
             'options' => [0 => 'Draft', 1 => 'Published'],
-            'value' => null,
+            'default' => 0,
         ]);
-
-        // ------ CRUD COLUMNS
-        $this->crud->addColumns(['title']); // add multiple columns, at the end of the stack
-        $this->crud->addColumn([
-            'name' => 'status',
-            'label' => 'Status',
-            'type' => 'boolean',
-            'options' => [0 => 'Draft', 1 => 'Published'],
-        ]);
-
-
-    }
-
-
-    public function store(StoreRequest $request)
-    {
-        $store_response = parent::storeCrud($request);
-
-        $disk = config('seandowney.gallerycrud.disk');
-
-        if (!is_dir(Storage::disk($disk)->getAdapter()->getPathPrefix().'/'.$this->crud->entry->slug)) {
-            // create the gallery folder
-            Storage::disk($disk)->makeDirectory($this->crud->entry->slug);
-        }
-
-        return $store_response;
-    }
-
-    public function update(UpdateRequest $request)
-    {
-        return parent::updateCrud($request);
     }
 }

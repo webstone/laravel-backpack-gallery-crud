@@ -2,6 +2,9 @@
 
 
 @section('content')
+<div class="light-wrapper start">
+
+    <div class="container inner">
         <div class="row topspace">
             <div class="col-sm-8 col-sm-offset-2">
                 <article class="post">
@@ -21,12 +24,12 @@
 			<div class="thumbnails recentworks row gallery">
                 @foreach($files as $key => $item)
 				<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject" class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
-					<a class="thumbnail @if($key == 0)demo-gallery__img--main @endif" href="{{ gallery_image_url($item['image_path']) }}" data-size="{{ $item['width'] }}x{{ $item['height'] }}" itemprop="contentUrl">
+					<a class="thumbnail @if($key == 0)demo-gallery__img--main @endif" href="{{ image_url($item['image_path']) }}" data-size="{{ $item['width'] }}x{{ $item['height'] }}" itemprop="contentUrl">
 						<span class="img">
-							<img src="{{ gallery_image_url($item['image_path'].'?w=300&h=200') }}" alt="" itemprop="thumbnail" >
+							<img src="{{ image_url($item['image_path'].'?w=300&h=200') }}" alt="" itemprop="thumbnail" >
 						</span>
 					</a>
-                    <figcaption itemprop="caption description">{{ $item['caption'] }}</figcaption>
+                    @if(isset($item['caption']))<figcaption itemprop="caption description">{{ $item['caption'] }}</figcaption>@endif
 				</figure>
                 @endforeach
 			</div>
@@ -34,7 +37,8 @@
 		</div> <!-- /section -->
 
 @endif
-
+    </div>
+</div>
 <!-- Root element of PhotoSwipe. Must have class pswp. -->
 <div id="gallery" class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="pswp__bg"></div>
@@ -96,12 +100,24 @@
     </div>
 @stop
 
+@section('head')
+<!-- Core CSS file -->
+<link rel="stylesheet" href="/style/css/photoswipe.css">
+
+<!-- Skin CSS file (styling of UI - buttons, caption, etc.)
+	 In the folder of skin CSS file there are also:
+	 - .png and .svg icons sprite,
+	 - preloader.gif (for browsers that do not support CSS animations) -->
+<link rel="stylesheet" href="/style/css/default-skin/default-skin.css">
+@stop
+
+
 @section('footer')
 <!-- Core JS file -->
-<script src="/assets/js/photoswipe.min.js"></script>
+<script src="/js/photoswipe.min.js"></script>
 
 <!-- UI JS file -->
-<script src="/assets/js/photoswipe-ui-default.min.js"></script>
+<script src="/js/photoswipe-ui-default.min.js"></script>
 
 <script type="text/javascript">
    (function() {

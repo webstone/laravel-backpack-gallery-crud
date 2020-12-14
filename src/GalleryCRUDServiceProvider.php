@@ -28,6 +28,8 @@ class GalleryCRUDServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->setupRoutes($this->app->router);
+
         // publish migrations
         $this->publishes([__DIR__.'/database/migrations' => database_path('migrations')], 'migrations');
 
@@ -62,8 +64,6 @@ class GalleryCRUDServiceProvider extends ServiceProvider
     {
         // register its dependencies
         $this->app->register(\Cviebrock\EloquentSluggable\ServiceProvider::class);
-
-        $this->setupRoutes($this->app->router);
     }
 
 

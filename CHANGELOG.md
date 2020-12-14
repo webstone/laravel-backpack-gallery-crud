@@ -2,6 +2,16 @@
 
 All Notable changes to `SeanDowney Laravel Backpack GalleryCrud` will be documented in this file
 
+## 2.0.0 - 2020-12-14
+
+This is a breaking change to upgrade to Backpack CRUD 4.1
+
+### Updated
+- Updating to Backpack CRUD 4.1
+- Changing how the galleries are setup to make it more user friendly
+- Updating the basic frontend templates
+- Adding a migration to convert existing galleries to the new structure
+
 ## 1.1.0 - 2018-07-29
 
 This is a breaking change because it uses Glide to serve the images

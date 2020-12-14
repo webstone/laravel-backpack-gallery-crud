@@ -11,13 +11,6 @@ use Storage;
  */
 class GalleryController extends Controller
 {
-    protected $disk;
-
-    public function __construct()
-    {
-        $this->disk = config('seandowney.gallerycrud.disk');
-    }
-
     /**
      * Gallery listing page
      *
@@ -53,26 +46,15 @@ class GalleryController extends Controller
             abort(404, 'Please go back to our <a href="'.url('').'">homepage</a>.');
         }
 
-        $files = Storage::disk($this->disk)->allFiles($gallery->slug);
-
-        $files = array_map(function($value) use ($gallery) {
-            return str_replace($gallery->slug.'/', '', $value);
-        }, $files);
-
         $files_data = [];
         if (isset($gallery->images) && !empty($gallery->images)) {
-            foreach ($gallery->images as $file => $image_details) {
-                // check if the file is actually in the gallery directory
-                if (!in_array($file, $files) || !$image_details['live']) {
-                    continue;
-                }
+            foreach ($gallery->images as $file) {
+                $size_data = getimagesize(storage_path('app/'.$file));
 
                 $files_data[] = [
-                    'file' => $file,
-                    'image_path' => $image_details['image_path'],
-                    'live' => isset($image_details) ? $image_details['live'] : 0,
-                    'width' => $image_details['width'],
-                    'height' => $image_details['height'],
+                    'image_path' => $file,
+                    'width' => $size_data[0],
+                    'height' => $size_data[1],
                     'caption' => isset($gallery->captions[$file]) ? $gallery->captions[$file] : '',
                 ];
             }

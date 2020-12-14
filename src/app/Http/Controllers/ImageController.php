@@ -15,7 +15,7 @@ class ImageController extends Controller
             'response' => new LaravelResponseFactory(app('request')),
             // 'source' => $filesystem->getDriver(),
             'source' => app('filesystem')->disk('local')->getDriver(),
-            'cache' => $filesystem->getDriver(),
+            'cache' => app('filesystem')->getDriver(),
             'cache_path_prefix' => '.cache',
             'base_url' => 'image',
         ]);

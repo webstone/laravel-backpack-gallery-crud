@@ -2,6 +2,9 @@
 
 
 @section('content')
+<div class="light-wrapper start">
+
+    <div class="container inner">
         <div class="row topspace">
             <div class="col-sm-8 col-sm-offset-2">
                 <article class="post">
@@ -22,12 +25,13 @@
                 <h1 class="entry-title"><a href="{{ url('/gallery/'.$gallery->slug) }}" rel="bookmark">{{ $gallery->title }}</a></h1>
             </header>
             <div class="entry-content">
-                <p>{{ strip_tags(str_limit($gallery->body, 300)) }}</p>
+                <p>{{ strip_tags(Str::limit($gallery->body, 300)) }}</p>
             </div>
         </article>
         @endforeach
     </div>
 </div>
 @endif
-
+    </div>
+</div>
 @stop
