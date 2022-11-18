@@ -64,22 +64,17 @@ $ php artisan migrate #create the gallery table
 7) [Optional] Add a menu item for it in resources/views/vendor/backpack/base/inc/sidebar.blade.php or menu.blade.php:
 
 ```html
-<li><a href="{{ url(config('backpack.base.route_prefix', 'admin').'/gallery') }}"><i class="fa fa-picture-o"></i> <span>Gallery</span></a></li>
+<li><a href="{{ url(config('backpack.base.route_prefix', 'admin').'/gallery') }}"><i class="la la-picture-o"></i> <span>Galleries</span></a></li>
 ```
 
 ## How to use the package
 This package relies heavily on the `elFinder` File Manager in Bakpack.
 
 * First create a gallery
-* In your galleries folder (the `path` setting in your `config/elfinder.php` roots), create a folder with the same name as the `slug` in your gallery record.
-* Upload image files into the folder
-* Now you can edit the gallery and the images are visible
-* You can add captions and include the images in the gallery or not
-* To remove images from the gallery
-  * uncheck the `Include` checkbox
-  * then in the file manager remove the file from the folder for that gallery
+* Select some images or upload new ones
+* Save the gallery and edit it again
+* Now you can edit the captions for the selected images
 * Helper methods are now available to load the images using Glide.
-  * `gallery_image_url` will load images from a gallery eg `gallery_image_url($item['image_path'].'?w=300&h=200')`
   * `image_url` can be used where the images is from a `browse` field type so it may already include the disk path
 
 ## Change log

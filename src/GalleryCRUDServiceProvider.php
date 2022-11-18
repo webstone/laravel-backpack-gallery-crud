@@ -28,6 +28,7 @@ class GalleryCRUDServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
         // define the routes for the application
         $this->setupRoutes($this->app->router);
 
@@ -57,6 +58,17 @@ class GalleryCRUDServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register any package services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        // register its dependencies
+        $this->app->register(\Cviebrock\EloquentSluggable\ServiceProvider::class);
+    }
+
+    /**
      * Define the routes for the application.
      *
      * @param  \Illuminate\Routing\Router  $router
@@ -73,15 +85,5 @@ class GalleryCRUDServiceProvider extends ServiceProvider
         }
 
         $this->loadRoutesFrom($routeFilePathInUse);
-    }
-
-    /**
-     * Register any package services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        $this->app->register(\Cviebrock\EloquentSluggable\ServiceProvider::class);
     }
 }
