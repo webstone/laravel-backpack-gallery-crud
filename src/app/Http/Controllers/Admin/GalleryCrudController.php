@@ -3,6 +3,7 @@
 namespace SeanDowney\BackpackGalleryCrud\app\Http\Controllers\Admin;
 
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use Storage;
 
 // VALIDATION: change the requests to match your own file names if you need form validation
 use SeanDowney\BackpackGalleryCrud\app\Http\Requests\GalleryRequest as StoreRequest;
@@ -83,26 +84,26 @@ class GalleryCrudController extends CrudController
             'label' => 'Body',
             'type' => 'ckeditor',
             'placeholder' => 'Your textarea text here',
-        ]);
-
-        $this->crud->addField([   // Upload
-            'name'      => 'images',
-            'label'     => 'Images',
-            'type'      => 'browse_multiple',
-            'multiple'   => true,
-            'sortable'   => true,
-            'mime_types' => ['image'],
+            'options' => [
+                'autoGrow_minHeight' => 200,
+                'autoGrow_bottomSpace' => 50,
+                'embed_provider' => "//iframely.webstone.io/oembed?url={url}&callback={callback}",
+                'removePlugins' => 'embed,image,resize,maximize',
+            ]
         ]);
 
         $this->crud->addField([ // Table
-            'name' => 'captions',
-            'label' => 'Captions',
+            'name' => 'image_items',
+            'label' => 'Images',
             'type' => 'gallery_table',
             'entity_singular' => 'image_item', // used on the "Add X" button
             'columns' => [
                 'image' => 'Upload Image',
                 'caption' => 'Caption',
             ],
+            'max' => 50, // maximum rows allowed in the table
+            'min' => 0, // minimum rows allowed in the table
+            'disk' => config('seandowney.gallerycrud.disk'),
         ]);
 
         $this->crud->addField([    // SELECT
@@ -111,16 +112,7 @@ class GalleryCrudController extends CrudController
             'name' => 'status',
             'allows_null' => true,
             'options' => [0 => 'Draft', 1 => 'Published'],
-            'default' => 0,
-        ]);
-
-        // ------ CRUD COLUMNS
-        $this->crud->addColumns(['title']); // add multiple columns, at the end of the stack
-        $this->crud->addColumn([
-            'name' => 'status',
-            'label' => 'Status',
-            'type' => 'boolean',
-            'options' => [0 => 'Draft', 1 => 'Published'],
+            'value' => null,
         ]);
     }
 

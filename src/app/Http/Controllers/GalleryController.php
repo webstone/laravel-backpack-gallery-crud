@@ -11,6 +11,13 @@ use Storage;
  */
 class GalleryController extends Controller
 {
+    protected $disk;
+
+    public function __construct()
+    {
+        $this->disk = config('seandowney.gallerycrud.disk');
+    }
+
     /**
      * Gallery listing page
      *
@@ -21,7 +28,7 @@ class GalleryController extends Controller
         $galleries = Gallery::published()->latest()->paginate();
 
         if (!$galleries) {
-            abort(404, 'Please go back to our <a href="'.url('').'">homepage</a>.');
+            abort(404);
         }
 
         $this->data['title'] = 'Galleries';
@@ -43,18 +50,29 @@ class GalleryController extends Controller
         $gallery = Gallery::whereSlug($slug)->published()->first();
 
         if (!$gallery) {
-            abort(404, 'Please go back to our <a href="'.url('').'">homepage</a>.');
+            abort(404);
         }
+
+        $files = Storage::disk($this->disk)->allFiles($gallery->slug);
+
+        $files = array_map(function($value) use ($gallery) {
+            return str_replace($gallery->slug.'/', '', $value);
+        }, $files);
 
         $files_data = [];
         if (isset($gallery->images) && !empty($gallery->images)) {
-            foreach ($gallery->images as $file) {
-                $size_data = getimagesize(storage_path('app/'.$file));
+            foreach ($gallery->images as $file => $image_details) {
+                // check if the file is actually in the gallery directory
+                if (!in_array($file, $files) || !$image_details['live']) {
+                    continue;
+                }
 
                 $files_data[] = [
-                    'image_path' => $file,
-                    'width' => $size_data[0],
-                    'height' => $size_data[1],
+                    'file' => $file,
+                    'image_path' => $image_details['image_path'],
+                    'live' => isset($image_details) ? $image_details['live'] : 0,
+                    'width' => $image_details['width'],
+                    'height' => $image_details['height'],
                     'caption' => isset($gallery->captions[$file]) ? $gallery->captions[$file] : '',
                 ];
             }

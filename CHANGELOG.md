@@ -2,11 +2,27 @@
 
 All Notable changes to `SeanDowney Laravel Backpack GalleryCrud` will be documented in this file
 
+## 3.1.0 - 2023-09-18
+
+### Fixed
+- Compatibility with Laravel 9.0 and 10.0
+
+## 3.0.0 - 2022-11-19
+
+### Fixed
+- This is a breaking change to upgrade to Backpack CRUD 5.0
+
+## 2.1.0 - 2022-11-19
+
+### Fixed
+- Compatibility with Laravel 7.0 and 8.0
+
 ## 2.0.0 - 2020-12-14
 
-This is a breaking change to upgrade to Backpack CRUD 4.1
+### Fixed
+- This is a breaking change to upgrade to Backpack CRUD 4.1
 
-### Updated
+### Fixed
 - Updating to Backpack CRUD 4.1
 - Changing how the galleries are setup to make it more user friendly
 - Updating the basic frontend templates
