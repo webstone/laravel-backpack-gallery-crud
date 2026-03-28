@@ -13,7 +13,7 @@ It uses [Glide](http://glide.thephpleague.com/) and provides helper methods to s
 1) In your terminal:
 
 ``` bash
-$ composer require seandowney/backpackgallerycrud
+$ composer require webstone/laravel-backpack-gallery-crud
 ```
 
 2) If your Laravel version does not have package autodiscovery then add the service provider to your config/app.php file:

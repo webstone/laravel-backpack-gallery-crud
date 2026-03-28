@@ -1,6 +1,6 @@
 {
-    "name": "seandowney/backpackgallerycrud",
-    "description": "Gallery management interface for Laravel 6 using Backpack CRUD.",
+    "name": "webstone/laravel-backpack-gallery-crud",
+    "description": "Gallery management interface for Laravel using Backpack CRUD.",
     "keywords": [
         "laravel backpack",
         "gallery", "galleries",
@@ -14,10 +14,10 @@
         "role": "Lead Developer"
     }],
     "require": {
-        "php": "^7.2.5|^8.0|^8.1",
+        "php": "^7.2.5|^8.0|^8.1|^8.2",
         "backpack/crud": "^5.0.0",
         "cviebrock/eloquent-sluggable": "^6.0|^7.0|^8.0|^9.0|^10.0",
-        "league/glide-symfony": "^1.0|^2.0"
+        "webstone/glide-symfony": "^1.0|^2.0|^3.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.5|^9.0",
